@@ -22,4 +22,20 @@ describe Oystercard do
       expect{ subject.deduct(1) }.to change{ subject.balance }.by -1
     end
   end
+
+  describe '#in_journey?' do
+    it "shows the journey status" do
+      expect(subject).to respond_to(:in_journey)
+    end
+    it "starts the journey not in use (false)" do
+      expect(subject.in_journey).to eq(false)
+    end
+    it "is changed to true by #touch_in" do
+      expect{ subject.touch_in }.to change{ subject.in_journey }.to eq(true)
+    end
+    it "is changed to false by #touch_out" do
+      subject.touch_in
+      expect{ subject.touch_out}.to change{ subject.in_journey}.to eq(false)
+    end
+  end
 end
