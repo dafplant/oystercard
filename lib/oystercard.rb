@@ -10,4 +10,9 @@ class Oystercard
     raise "Cannot go past #{LIMIT}" if value + balance > LIMIT
     @balance += value
   end
+
+  def deduct(value)
+    @balance -= value
+  end
+
 end
