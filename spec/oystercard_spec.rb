@@ -31,11 +31,23 @@ describe Oystercard do
       expect(subject.in_journey).to eq(false)
     end
     it "is changed to true by #touch_in" do
-      expect{ subject.touch_in }.to change{ subject.in_journey }.to eq(true)
+      card = Oystercard.new
+      card.top_up(5)
+      expect{ card.touch_in }.to change{ card.in_journey }.to eq(true)
     end
     it "is changed to false by #touch_out" do
-      subject.touch_in
-      expect{ subject.touch_out}.to change{ subject.in_journey}.to eq(false)
+      card = Oystercard.new
+      card.top_up(5)
+      card.touch_in
+      expect{ card.touch_out}.to change{ card.in_journey}.to eq(false)
     end
   end
+
+  describe '#minimum_fare' do
+    it 'will raise error if balance is 0' do
+      card = Oystercard.new
+      expect{ card.touch_in }.to raise_error "Insufficient funds"
+    end
+  end
+
 end
