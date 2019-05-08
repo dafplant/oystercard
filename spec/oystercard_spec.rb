@@ -17,11 +17,11 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it "deducts money from card" do
-      expect{ subject.deduct(1) }.to change{ subject.balance }.by -1
-    end
-  end
+  # describe '#deduct' do
+  #   it "deducts money from card" do
+  #     expect{ subject.deduct(1) }.to change{ subject.balance }.by -1
+  #   end
+  # end
 
   describe '#in_journey?' do
     it "shows the journey status" do
@@ -30,24 +30,32 @@ describe Oystercard do
     it "starts the journey not in use (false)" do
       expect(subject.in_journey).to eq(false)
     end
+  end
+
+  describe '#touch_in' do
     it "is changed to true by #touch_in" do
       card = Oystercard.new
       card.top_up(5)
       expect{ card.touch_in }.to change{ card.in_journey }.to eq(true)
     end
-    it "is changed to false by #touch_out" do
-      card = Oystercard.new
-      card.top_up(5)
-      card.touch_in
-      expect{ card.touch_out}.to change{ card.in_journey}.to eq(false)
+      it 'will raise error if balance is 0' do
+        card = Oystercard.new
+        expect{ card.touch_in }.to raise_error "Insufficient funds"
+      end
     end
-  end
 
-  describe '#minimum_fare' do
-    it 'will raise error if balance is 0' do
-      card = Oystercard.new
-      expect{ card.touch_in }.to raise_error "Insufficient funds"
+    describe '#touch_out' do
+      it "is changed to false by #touch_out" do
+        card = Oystercard.new
+        card.top_up(5)
+        card.touch_in
+        expect{ card.touch_out}.to change{ card.in_journey}.to eq(false)
+      end
+      it 'will charge minimum_fare on touch out' do
+        card = Oystercard.new
+        card.top_up(5)
+        card.touch_in
+        expect { card.touch_out }.to change{ card.balance }.by -Oystercard::MINIMUM_FARE
+      end
     end
-  end
-
 end
