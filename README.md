@@ -1,14 +1,15 @@
 # Oystercard
 
-A small program to use the Oystercard system. Gives you a card which you can use to travel between station, and also remembers the journeys that you have made.
+A small program to use the Oystercard system. Gives you a card which you can use to travel between stations, and also remembers the journeys that you have made.
 
 ## Getting started
 
 Run `bundle install`
 
-# User stories used to create this program:
+## User stories used to create this program:
 
-```In order to use public transport
+```
+In order to use public transport
 As a customer
 I want money on my card
 
@@ -54,4 +55,5 @@ I need a penalty charge deducted if I fail to touch in or out
 
 In order to be charged the correct amount
 As a customer
-I need to have the correct fare calculated```
+I need to have the correct fare calculated
+```
