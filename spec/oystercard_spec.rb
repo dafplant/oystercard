@@ -17,12 +17,6 @@ describe Oystercard do
     end
   end
 
-  # describe '#deduct' do
-  #   it "deducts money from card" do
-  #     expect{ subject.deduct(1) }.to change{ subject.balance }.by -1
-  #   end
-  # end
-
   describe '#in_journey?' do
     it "shows the journey status" do
       expect(subject).to respond_to(:in_journey?)
@@ -45,14 +39,6 @@ describe Oystercard do
     end
   end
 
-
-        # it 'will give the entry station' do
-        #
-        #   expect(card.entry_station).to eq('station')
-        # end
-
-
-
   describe "let" do
     let(:station) { double :station }
       it 'gives the name of the station' do
@@ -63,20 +49,35 @@ describe Oystercard do
       end
   end
 
+  describe "let" do
+    let(:station) { double :station }
+      it 'will take an exit station' do
+        subject.touch_out(station)
+        expect(subject.exit_station).to eq station
+      end
+    end
 
     describe '#touch_out' do
       it "is changed to false by #touch_out" do
         card = Oystercard.new
         card.top_up(5)
         card.touch_in(:station)
-        expect{ card.touch_out}.to change{ card.in_journey?}.to eq(false)
+        expect{ card.touch_out(:station)}.to change{ card.in_journey?}.to eq(false)
       end
+
       it 'will charge minimum_fare on touch out' do
         card = Oystercard.new
         card.top_up(5)
         card.touch_in(:station)
-        expect { card.touch_out }.to change{ card.balance }.by -Oystercard::MINIMUM_FARE
+        expect { card.touch_out(:station) }.to change{ card.balance }.by -Oystercard::MINIMUM_FARE
       end
 
+      it 'checks an empty list of journeys' do
+        expect(subject).to respond_to(:journeys)
+      end
+
+      it 'lists first and last stations' do
+        expect(subject.journeys).to include(@entry_station => @exit_station)
+      end
     end
 end
